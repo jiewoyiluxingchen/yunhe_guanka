@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>运河闯关 · 广西特辑</title>
+<style>
+:root{--red:#C8102E;--rl:#FCEEF0;--blue:#0A5C8A;--bl:#E3EFF6;--green:#1E7A52;--gl:#E3F2EA;
+--gold:#C8930B;--yl:#FDF3DC;--ink:#1B1B1B;--i2:#4A4A4A;--i3:#8A8A8A;--line:#E4E4E0}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Microsoft YaHei","PingFang SC",sans-serif;background:#F2F5F7;color:var(--ink);
+min-height:100vh;display:flex;justify-content:center}
+.w{width:100%;max-width:430px;background:#fff;min-height:100vh;box-shadow:0 0 30px rgba(0,0,0,.08)}
+.top{position:sticky;top:0;z-index:9;background:linear-gradient(90deg,#0A5C8A,#1B7BA8);color:#fff;
+padding:11px 16px;display:flex;align-items:center;gap:8px}
+.top .t{font-size:15px;font-weight:800;flex:1;line-height:1.25}
+.top .t s{display:block;font-size:10.5px;opacity:.85;text-decoration:none;font-weight:400}
+.hp{background:rgba(255,255,255,.2);padding:4px 11px;border-radius:20px;font-size:12px;font-weight:700}
+.tr{padding:11px 16px 7px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+.nd{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+font-size:12px;font-weight:800;background:#EDEDE9;color:#B0B0AA;flex:0 0 30px;transition:.3s}
+.nd.done{background:var(--green);color:#fff}.nd.on{background:var(--red);color:#fff}
+.br{flex:1;height:3px;background:#EDEDE9;margin:0 -2px;position:relative}
+.br i{position:absolute;left:0;top:0;height:100%;width:0;background:var(--green);transition:width .5s}
+.pg{display:none;padding:18px 18px 40px;animation:f .3s}.pg.on{display:block}
+@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2{font-size:21px;font-weight:800;line-height:1.4;margin-bottom:6px}
+p.d{font-size:13.5px;color:var(--i2);line-height:1.7;margin-bottom:14px}
+input{width:100%;padding:13px 15px;border:2px solid var(--line);border-radius:10px;font-size:15px;
+font-family:inherit;outline:none}input:focus{border-color:var(--blue)}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:800;
+font-family:inherit;cursor:pointer;background:var(--blue);color:#fff;margin-top:12px}
+.btn:active{transform:scale(.985)}.btn.red{background:var(--red)}.btn.green{background:var(--green)}
+.btn.gold{background:var(--gold)}.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn:disabled{background:#D5D5D0}
+.map{background:linear-gradient(160deg,#E3EFF6,#F2F8FB);border-radius:14px;padding:12px;margin:14px 0;border:1px solid #D6E6F0}
+.map svg{width:100%;height:auto;display:block}
+.opt{background:#fff;border:2px solid var(--line);border-radius:11px;padding:13px 15px;margin-bottom:10px;
+font-size:14.5px;cursor:pointer;line-height:1.5}
+.opt:active{transform:scale(.99)}.opt.right{border-color:var(--green);background:var(--gl)}
+.opt.wrong{border-color:var(--red);background:var(--rl)}
+.opt .k{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:5px;
+background:#EDEDE9;font-size:12px;font-weight:800;margin-right:9px;color:#555}
+.opt.right .k{background:var(--green);color:#fff}.opt.wrong .k{background:var(--red);color:#fff}
+.qb{background:var(--bl);border-left:4px solid var(--blue);border-radius:9px;padding:13px 15px;
+font-size:14.5px;line-height:1.7;margin-bottom:14px;font-weight:600}
+.qb s{font-size:11.5px;color:var(--blue);font-weight:800;display:block;margin-bottom:5px;text-decoration:none}
+.kn{display:none;background:var(--yl);border:1px dashed var(--gold);border-radius:10px;padding:13px 15px;
+margin-top:8px;font-size:13.5px;line-height:1.7}.kn.on{display:block;animation:f .3s}
+.kn b{color:#8A6D00}
+.dg{background:#fff;border:2px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:9px;
+font-size:13.5px;display:flex;align-items:center;gap:10px;line-height:1.5}
+.dg .rk{flex:0 0 24px;height:24px;border-radius:6px;background:var(--red);color:#fff;font-size:12px;
+font-weight:800;display:flex;align-items:center;justify-content:center}
+.dg .ct{flex:1}.dg .ct b{display:block;font-size:13.5px;margin-bottom:2px}
+.dg .ct span{font-size:11.5px;color:var(--i3);line-height:1.45}
+.vt{border:2px solid var(--line);border-radius:11px;padding:14px 16px;margin-bottom:10px;cursor:pointer;
+font-size:14.5px;background:#fff}.vt.sel{border-color:var(--blue);background:var(--bl)}
+.cert{background:linear-gradient(150deg,#fff,#FFFDF6);border:3px solid var(--gold);border-radius:16px;
+padding:24px 20px;text-align:center;position:relative;margin:8px 0 14px}
+.cert::before,.cert::after{content:"";position:absolute;width:24px;height:24px;border:3px solid var(--gold)}
+.cert::before{left:9px;top:9px;border-right:none;border-bottom:none}
+.cert::after{right:9px;bottom:9px;border-left:none;border-top:none}
+.cert .cap{font-size:11px;letter-spacing:3px;color:var(--gold);font-weight:700}
+.cert h3{font-size:22px;font-weight:800;margin:10px 0 4px}
+.cert .nm{font-size:18px;font-weight:800;color:var(--red);margin:9px 0}
+.cert .sc{font-size:13.5px;color:var(--i2);line-height:1.85;margin-top:10px}
+.cert .seal{position:absolute;right:14px;bottom:14px;width:70px;height:70px;border:2.5px solid var(--red);
+border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+transform:rotate(-14deg);opacity:.82}
+.cert .seal b{font-size:11.5px;color:var(--red);line-height:1.3}
+.cert .seal s{font-size:8px;color:var(--red);text-decoration:none}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;margin-bottom:9px}
+.pill.b{background:var(--bl);color:var(--blue)}.pill.r{background:var(--rl);color:var(--red)}
+.pill.g{background:var(--gl);color:var(--green)}.pill.y{background:var(--yl);color:#8A6D00}
+.tip{font-size:11.5px;color:var(--i3);text-align:center;margin-top:14px;line-height:1.7}
+.sum{background:var(--bl);border-radius:11px;padding:15px 17px;margin-top:14px;font-size:13.5px;line-height:1.85}
+</style>
+</head>
+<body>
+<div class="w">
+<div class="top">
+  <div class="t">运河闯关 · 广西特辑<s>新时代中国特色社会主义理论与实践</s></div>
+  <div class="hp">♥ <span id="sc">0</span></div>
+</div>
+<div class="tr">
+  <div class="nd" id="n0">启</div><div class="br"><i id="b0"></i></div>
+  <div class="nd" id="n1">1</div><div class="br"><i id="b1"></i></div>
+  <div class="nd" id="n2">2</div><div class="br"><i id="b2"></i></div>
+  <div class="nd" id="n3">3</div><div class="br"><i id="b3"></i></div>
+  <div class="nd" id="n4">🏆</div>
+</div>
+
+<div class="pg on" id="p0">
+  <span class="pill b">广西大学 计算机与电子信息学院 · 第一组</span>
+  <h2>运河有数，安全有界</h2>
+  <p class="d">从平陆运河"智慧运河"看<b>统筹发展和安全</b>。<br>输入昵称启航，连过三道闸门。</p>
+  <div class="map">
+    <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei,sans-serif">
+      <defs><linearGradient id="w" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#9BD0EE"/><stop offset="1" stop-color="#3E8CB8"/></linearGradient></defs>
+      <path d="M26 44 C110 26,160 96,236 84 C300 74,346 138,378 122" stroke="url(#w)" stroke-width="26" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path d="M26 44 C110 26,160 96,236 84 C300 74,346 138,378 122" stroke="#fff" stroke-width="2" fill="none" stroke-dasharray="7 7" opacity=".85"/>
+      <circle cx="26" cy="44" r="11" fill="#1E7A52"/><text x="26" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#1E7A52">平塘江口</text>
+      <circle cx="130" cy="46" r="13" fill="#1E7A52" stroke="#fff" stroke-width="2.5"/><text x="130" y="51" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">1</text>
+      <circle cx="236" cy="84" r="13" fill="#C8102E" stroke="#fff" stroke-width="2.5"/><text x="236" y="89" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">2</text>
+      <circle cx="340" cy="124" r="13" fill="#0A5C8A" stroke="#fff" stroke-width="2.5"/><text x="340" y="129" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">3</text>
+      <circle cx="378" cy="122" r="10" fill="#C8930B"/><text x="378" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#8A6D00">北部湾</text>
+      <text x="200" y="178" text-anchor="middle" font-size="10" font-weight="700" fill="#0A5C8A">134.2 km · 落差 65 m · 三大梯级枢纽</text>
+    </svg>
+  </div>
+  <input id="nk" placeholder="你的昵称，如：船员小明" maxlength="12">
+  <button class="btn red" id="go">🚢 登船启航</button>
+  <p class="tip">本版为<b>单机版</b>，无需联网、无需服务器<br>答题完成后可截图保存你的证书</p>
+</div>
+
+<div class="pg" id="p1">
+  <span class="pill g">关卡 1 · 发展之河</span><h2>一河通，百业兴</h2>
+  <p class="d">对应教材<b>第三章「构建新发展格局」</b>与<b>第七章「美丽中国建设」</b></p>
+  <div id="qa"></div><div class="kn" id="k1"></div>
+</div>
+
+<div class="pg" id="p2">
+  <span class="pill r">关卡 2 · 安全之河</span><h2>一脑智控，一键触达</h2>
+  <p class="d">对应教材<b>第八章 §1「统筹发展和安全」</b><br><b>点击卡片可上移</b>，把你最担心的排到最上面。</p>
+  <div id="dr"></div>
+  <button class="btn red" id="s2">提交我的排序</button>
+  <div class="kn" id="k2"></div>
+</div>
+
+<div class="pg" id="p3">
+  <span class="pill b">关卡 3 · 未来之河</span><h2>从广西走向东盟</h2>
+  <p class="d">对应教材<b>第九章「人类命运共同体」</b><br>这一题没有标准答案，说出你的真实判断。</p>
+  <div id="v3"></div><div class="kn" id="k3"></div>
+</div>
+
+<div class="pg" id="p4">
+  <div class="cert">
+    <div class="cap">新 时 代 · 运 河 守 望 者</div>
+    <h3>学习通关证书</h3>
+    <div class="nm" id="cn">——</div>
+    <div class="sc">已完成三关 · 得分 <b id="cs">0</b><br>
+      <span style="font-size:12px;color:#8A8A8A">广西大学 计算机与电子信息学院<br>《新时代中国特色社会主义理论与实践》第一组</span></div>
+    <div class="seal"><b>统筹发展<br>和安全</b><s>GXU · 2026</s></div>
+  </div>
+  <p class="tip">📱 长按或截图保存这张证书</p>
+  <div class="sum">
+    <b style="color:var(--blue)">📖 通关小结</b><br>
+    回到教材第八章那句话：<b>发展是安全的基础，安全是发展的条件</b>。<br>
+    平陆运河以"零重大安全事故、零人员死亡、零重大生态破坏"证明二者可以兼得；
+    而它作为智慧运河的每一次调度都提醒我们——<b>网络安全就是国家安全</b>。
+  </div>
+  <button class="btn ghost" id="ag">再玩一次</button>
+</div>
+</div>
+
+<script>
+var Q=[{q:'平陆运河于哪一天正式建成通航？',o:['2024年9月','2025年9月','2026年9月16日','2027年9月'],a:2,
+ k:'2026年9月16日建成通航，是新中国成立以来第一条国家层面统筹建设的通江达海运河工程。'},
+{q:'平陆运河全线水位落差约为多少？',o:['25米','45米','65米','85米'],a:2,
+ k:'65米，相当于20多层楼高，因此建设马道、企石、青年三大梯级枢纽，让船像"走楼梯"一样升降。'},
+{q:'平陆运河在国内的地位是？',o:['最长的运河','最古老的运河','首条全生命周期智慧运河','唯一的内河运河'],a:2,
+ k:'国内首条全生命周期智慧运河：基于北斗、云计算、人工智能的监测系统，实现"一图总览、一脑智控、一键触达"。'}];
+var R=[{id:'B',t:'船闸控制指令被篡改',d:'伪造开闸指令，直接危及船舶与枢纽安全'},
+{id:'A',t:'智慧调度系统遭勒索攻击',d:'江河海一体化调度平台被加密，全线瘫痪'},
+{id:'C',t:'北斗定位信号被干扰',d:'位置数据失准，AI调度建立在错误输入上'},
+{id:'D',t:'AI 监测模型误判',d:'视觉识别漏报漂浮物或船闸异常'},
+{id:'E',t:'全线监控视频数据泄露',d:'关键基础设施敏感影像外流'},
+{id:'F',t:'省水船闸核心算法被逆向',d:'世界首创工艺参数外泄'}];
+var V={q:'广西正在建设"反电信诈骗领域垂直大模型"。为识别诈骗，这个模型可以读取用户通话内容吗？',
+ o:['✅ 支持——安全优先，反诈需要数据','❌ 反对——隐私优先，绝不能读取','🤔 看情况——需明确授权、最小化、可审计']};
+
+var nm='',score=0,qi=0,ord=[];
+function $(i){return document.getElementById(i)}
+function go(n){
+  for(var i=0;i<5;i++)$('p'+i).className='pg';
+  $('p'+n).className='pg on';
+  for(var j=0;j<5;j++)$('n'+j).className='nd';
+  for(var k=0;k<n;k++)$('n'+k).className='nd done';
+  $('n'+n).className='nd on';
+  for(var b=0;b<4;b++)$('b'+b).style.width=(b<n?100:0)+'%';
+  window.scrollTo(0,0);
+}
+function add(n){score+=n;$('sc').textContent=score}
+function btnAfter(el,txt,fn){
+  var b=document.createElement('button');b.className='btn green';b.textContent=txt;b.onclick=fn;
+  el.parentNode.insertBefore(b,el.nextSibling);b.scrollIntoView({behavior:'smooth',block:'center'});
+}
+$('go').onclick=function(){
+  nm=$('nk').value.trim();if(!nm){$('nk').style.borderColor='#C8102E';return}
+  qi=0;r1();go(1);
+};
+function r1(){
+  var q=Q[qi],h='<div class="qb"><s>第 '+(qi+1)+' / '+Q.length+' 题</s>'+q.q+'</div>';
+  q.o.forEach(function(o,i){h+='<div class="opt" data-i="'+i+'"><span class="k">'+"ABCD"[i]+'</span>'+o+'</div>'});
+  $('qa').innerHTML=h;$('k1').className='kn';
+  [].forEach.call($('qa').querySelectorAll('.opt'),function(el){
+    el.onclick=function(){
+      if($('qa').querySelector('.right'))return;
+      var p=+el.dataset.i,ok=p===q.a;
+      [].forEach.call($('qa').querySelectorAll('.opt'),function(x,i){
+        if(i===q.a)x.className='opt right';else if(i===p)x.className='opt wrong';});
+      if(ok)add(10);
+      $('k1').innerHTML='<b>💡 知识点</b><br>'+q.k;$('k1').className='kn on';
+      if(qi<Q.length-1){btnAfter($('k1'),'下一题 →',function(){qi++;r1()})}
+      else{btnAfter($('k1'),'过闸 → 进入第二关',function(){r2();go(2)})}
+    };});
+}
+function r2(){
+  ord=R.map(function(x){return x.id});
+  for(var i=ord.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=ord[i];ord[i]=ord[j];ord[j]=t}
+  draw();$('k2').className='kn';$('s2').style.display='';$('s2').disabled=false;$('s2').textContent='提交我的排序';
+}
+function draw(){
+  var h='';
+  ord.forEach(function(id,i){
+    var r=R.filter(function(x){return x.id===id})[0];
+    h+='<div class="dg" data-id="'+id+'"><div class="rk">'+(i+1)+'</div><div class="ct"><b>'+r.t+'</b><span>'+r.d+'</span></div></div>';
+  });
+  $('dr').innerHTML=h;
+  [].forEach.call($('dr').querySelectorAll('.dg'),function(el){
+    el.onclick=function(){var i=ord.indexOf(el.dataset.id);
+      if(i>0){var t=ord[i];ord[i]=ord[i-1];ord[i-1]=t;draw()}};});
+}
+$('s2').onclick=function(){
+  var top=ord[0],r=R.filter(function(x){return x.id===top})[0],good=(top==='A'||top==='B');
+  add(good?15:8);
+  $('k2').innerHTML='<b>🛡 专家版参考：B ＞ A ＞ C ＞ D ＞ E ＞ F</b><br>你把「<b>'+r.t+'</b>」排在第一'+
+   (good?'　✅ 与专家版一致':'　💡 专家版把"船闸控制指令被篡改"排在最前')+'<br><br>'+
+   '<b>核心逻辑：</b>智慧运河是<b>信息物理融合系统</b>，网络攻击可穿透到物理世界。'+
+   '① 直接造成物理后果的（B、A）优先；② 影响输入可信度的（C）次之——AI 的前提是数据可信。'+
+   '正呼应二十届四中全会提出的<b>加强网络、数据、人工智能等新兴领域国家安全能力建设</b>。';
+  $('k2').className='kn on';this.style.display='none';
+  btnAfter($('k2'),'过闸 → 进入第三关',function(){r3();go(3)});
+  $('k2').scrollIntoView({behavior:'smooth',block:'start'});
+};
+function r3(){
+  var h='<div class="qb"><s>AI 伦理两难 · 现场站队</s>'+V.q+'</div>';
+  V.o.forEach(function(o,i){h+='<div class="vt" data-i="'+i+'">'+o+'</div>'});
+  $('v3').innerHTML=h;$('k3').className='kn';
+  [].forEach.call($('v3').querySelectorAll('.vt'),function(el){
+    el.onclick=function(){
+      [].forEach.call($('v3').querySelectorAll('.vt'),function(x){x.className='vt'});
+      el.className='vt sel';add(10);
+      $('k3').innerHTML='<b>🗳 没有标准答案，但有三条准绳</b><br>'+
+        '<b>① 统筹发展和安全</b>——反诈是发展所需，隐私保护是安全底线，不是二选一。<br>'+
+        '<b>② 依法依规</b>——《个人信息保护法》《数据安全法》明确告知同意、最小必要。<br>'+
+        '<b>③ 伦理先行</b>——《全球人工智能治理倡议》要求建立伦理准则、规范及<b>问责机制</b>。<br><br>'+
+        '<span style="color:#8A6D00">我们的答案：<b>第三项</b>。明确授权、最小化采集、全程可审计，才是"统筹"的落地。</span>';
+      $('k3').className='kn on';
+      btnAfter($('k3'),'通关！生成我的证书 🏆',function(){
+        $('cn').textContent=nm;$('cs').textContent=score;go(4);});
+      $('k3').scrollIntoView({behavior:'smooth',block:'start'});
+    };});
+}
+$('ag').onclick=function(){score=0;$('sc').textContent=0;qi=0;$('nk').value='';go(0)};
+</script>
+</body>
+</html>
