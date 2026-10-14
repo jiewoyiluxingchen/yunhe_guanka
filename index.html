@@ -111,7 +111,7 @@ transform:rotate(-14deg);opacity:.82}
   </div>
   <input id="nk" placeholder="你的昵称，如：船员小明" maxlength="12">
   <button class="btn red" id="go">🚢 登船启航</button>
-  <p class="tip">本版为<b>单机版</b>，无需联网、无需服务器<br>答题完成后可截图保存你的证书</p>
+  <p class="tip">本版为<b>单机版</b>，满分为55分<br>答题完成后可截图保存你的证书</p>
 </div>
 
 <div class="pg" id="p1">
@@ -122,7 +122,7 @@ transform:rotate(-14deg);opacity:.82}
 
 <div class="pg" id="p2">
   <span class="pill r">关卡 2 · 安全之河</span><h2>一脑智控，一键触达</h2>
-  <p class="d">对应教材<b>第八章 §1「统筹发展和安全」</b><br><b>点击卡片可上移</b>，把你最担心的排到最上面。</p>
+  <p class="d">对应教材<b>第八章 §1「统筹发展和安全」</b><br><b>单击卡片可上移一次</b>，把你最担心的排到最上面。</p>
   <div id="dr"></div>
   <button class="btn red" id="s2">提交我的排序</button>
   <div class="kn" id="k2"></div>
@@ -170,9 +170,10 @@ var R=[{id:'B',t:'船闸控制指令被篡改',d:'伪造开闸指令，直接危
 var V={q:'广西正在建设"反电信诈骗领域垂直大模型"。为识别诈骗，这个模型可以读取用户通话内容吗？',
  o:['✅ 支持——安全优先，反诈需要数据','❌ 反对——隐私优先，绝不能读取','🤔 看情况——需明确授权、最小化、可审计']};
 
-var nm='',score=0,qi=0,ord=[];
+var nm='',score=0,qi=0,ord=[],page=0,rankSubmitted=false,voteScored=false;
 function $(i){return document.getElementById(i)}
 function go(n){
+  page=n;
   for(var i=0;i<5;i++)$('p'+i).className='pg';
   $('p'+n).className='pg on';
   for(var j=0;j<5;j++)$('n'+j).className='nd';
@@ -182,21 +183,41 @@ function go(n){
   window.scrollTo(0,0);
 }
 function add(n){score+=n;$('sc').textContent=score}
+function clearNext(el){
+  var b=$(el.id+'-next');
+  if(b){b.disabled=true;b.onclick=null;b.parentNode.removeChild(b)}
+}
 function btnAfter(el,txt,fn){
-  var b=document.createElement('button');b.className='btn green';b.textContent=txt;b.onclick=fn;
+  clearNext(el);
+  var b=document.createElement('button');b.id=el.id+'-next';b.className='btn green';b.textContent=txt;
+  b.onclick=function(){
+    if(b.disabled||!b.parentNode)return;
+    clearNext(el);fn();
+  };
   el.parentNode.insertBefore(b,el.nextSibling);b.scrollIntoView({behavior:'smooth',block:'center'});
 }
+function resetGame(){
+  nm='';score=0;qi=0;ord=[];rankSubmitted=false;voteScored=false;
+  $('sc').textContent=0;$('cn').textContent='——';$('cs').textContent=0;
+  ['k1','k2','k3'].forEach(function(id){clearNext($(id));$(id).className='kn';$(id).innerHTML=''});
+  ['qa','dr','v3'].forEach(function(id){$(id).innerHTML=''});
+  $('s2').style.display='';$('s2').disabled=false;
+  $('nk').value='';$('nk').style.borderColor='';go(0);
+}
 $('go').onclick=function(){
+  if(page!==0)return;
   nm=$('nk').value.trim();if(!nm){$('nk').style.borderColor='#C8102E';return}
-  qi=0;r1();go(1);
+  $('nk').style.borderColor='';qi=0;r1();go(1);
 };
 function r1(){
-  var q=Q[qi],h='<div class="qb"><s>第 '+(qi+1)+' / '+Q.length+' 题</s>'+q.q+'</div>';
+  clearNext($('k1'));
+  var answered=false,q=Q[qi],h='<div class="qb"><s>第 '+(qi+1)+' / '+Q.length+' 题</s>'+q.q+'</div>';
   q.o.forEach(function(o,i){h+='<div class="opt" data-i="'+i+'"><span class="k">'+"ABCD"[i]+'</span>'+o+'</div>'});
   $('qa').innerHTML=h;$('k1').className='kn';
   [].forEach.call($('qa').querySelectorAll('.opt'),function(el){
     el.onclick=function(){
-      if($('qa').querySelector('.right'))return;
+      if(page!==1||answered)return;
+      answered=true;
       var p=+el.dataset.i,ok=p===q.a;
       [].forEach.call($('qa').querySelectorAll('.opt'),function(x,i){
         if(i===q.a)x.className='opt right';else if(i===p)x.className='opt wrong';});
@@ -207,6 +228,7 @@ function r1(){
     };});
 }
 function r2(){
+  clearNext($('k2'));rankSubmitted=false;
   ord=R.map(function(x){return x.id});
   for(var i=ord.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=ord[i];ord[i]=ord[j];ord[j]=t}
   draw();$('k2').className='kn';$('s2').style.display='';$('s2').disabled=false;$('s2').textContent='提交我的排序';
@@ -215,18 +237,20 @@ function draw(){
   var h='';
   ord.forEach(function(id,i){
     var r=R.filter(function(x){return x.id===id})[0];
-    h+='<div class="dg" data-id="'+id+'"><div class="rk">'+(i+1)+'</div><div class="ct"><b>'+r.t+'</b><span>'+r.d+'</span></div></div>';
+    h+='<div class="dg" data-id="'+id+'"><div class="rk">'+(i+1)+'</div><div class="ct"><b>'+r.id+' · '+r.t+'</b><span>'+r.d+'</span></div></div>';
   });
   $('dr').innerHTML=h;
   [].forEach.call($('dr').querySelectorAll('.dg'),function(el){
-    el.onclick=function(){var i=ord.indexOf(el.dataset.id);
+    el.onclick=function(){if(page!==2||rankSubmitted)return;var i=ord.indexOf(el.dataset.id);
       if(i>0){var t=ord[i];ord[i]=ord[i-1];ord[i-1]=t;draw()}};});
 }
 $('s2').onclick=function(){
+  if(page!==2||rankSubmitted)return;
+  rankSubmitted=true;this.disabled=true;
   var top=ord[0],r=R.filter(function(x){return x.id===top})[0],good=(top==='A'||top==='B');
   add(good?15:8);
   $('k2').innerHTML='<b>🛡 专家版参考：B ＞ A ＞ C ＞ D ＞ E ＞ F</b><br>你把「<b>'+r.t+'</b>」排在第一'+
-   (good?'　✅ 与专家版一致':'　💡 专家版把"船闸控制指令被篡改"排在最前')+'<br><br>'+
+   (top==='B'?'　✅ 首位与专家版一致':good?'　✅ 优先关注了可造成直接物理后果的风险；专家版首位为 B':'　💡 专家版把"船闸控制指令被篡改"排在最前')+'<br><br>'+
    '<b>核心逻辑：</b>智慧运河是<b>信息物理融合系统</b>，网络攻击可穿透到物理世界。'+
    '① 直接造成物理后果的（B、A）优先；② 影响输入可信度的（C）次之——AI 的前提是数据可信。'+
    '正呼应二十届四中全会提出的<b>加强网络、数据、人工智能等新兴领域国家安全能力建设</b>。';
@@ -235,13 +259,16 @@ $('s2').onclick=function(){
   $('k2').scrollIntoView({behavior:'smooth',block:'start'});
 };
 function r3(){
+  clearNext($('k3'));voteScored=false;
   var h='<div class="qb"><s>AI 伦理两难 · 现场站队</s>'+V.q+'</div>';
   V.o.forEach(function(o,i){h+='<div class="vt" data-i="'+i+'">'+o+'</div>'});
   $('v3').innerHTML=h;$('k3').className='kn';
   [].forEach.call($('v3').querySelectorAll('.vt'),function(el){
     el.onclick=function(){
+      if(page!==3)return;
       [].forEach.call($('v3').querySelectorAll('.vt'),function(x){x.className='vt'});
-      el.className='vt sel';add(10);
+      el.className='vt sel';
+      if(!voteScored){voteScored=true;add(10)}
       $('k3').innerHTML='<b>🗳 没有标准答案，但有三条准绳</b><br>'+
         '<b>① 统筹发展和安全</b>——反诈是发展所需，隐私保护是安全底线，不是二选一。<br>'+
         '<b>② 依法依规</b>——《个人信息保护法》《数据安全法》明确告知同意、最小必要。<br>'+
@@ -253,7 +280,7 @@ function r3(){
       $('k3').scrollIntoView({behavior:'smooth',block:'start'});
     };});
 }
-$('ag').onclick=function(){score=0;$('sc').textContent=0;qi=0;$('nk').value='';go(0)};
+$('ag').onclick=resetGame;
 </script>
 </body>
 </html>
